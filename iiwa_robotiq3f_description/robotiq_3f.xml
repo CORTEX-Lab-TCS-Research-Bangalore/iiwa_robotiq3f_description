@@ -1,0 +1,117 @@
+<mujoco model="robotiq_3f_gripper">
+  <compiler angle="radian" meshdir="assets/"/>
+
+  <default>
+    <default class="robotiq">
+      <joint damping="2.0" armature="0.1" frictionloss="0.05"
+             limited="true" solreflimit="0.005 1" solimplimit="0.99 0.999 0.001"/>
+      <position kp="10" kv="0.5" forcerange="-20 20"/>
+      <geom solref="0.01 1" solimp="0.95 0.99 0.001" friction="1.0 0.05 0.001"/>
+      <default class="robotiq_visual">
+        <geom contype="0" conaffinity="0" group="2" density="0" rgba="0.2 0.2 0.2 1"/>
+      </default>
+      <default class="robotiq_collision">
+        <geom group="3" rgba="0.5 0.5 0.5 0.3"/>
+      </default>
+      <default class="robotiq_fingertip">
+        <geom group="3" rgba="0.8 0.3 0.3 0.5" friction="2.0 0.1 0.001"/>
+      </default>
+    </default>
+  </default>
+
+    <asset>
+        <mesh name="rq_link_0" file="robotiq/robotiq-3f-gripper_articulated/visual/link_0.obj"/>
+        <mesh name="rq_link_1" file="robotiq/robotiq-3f-gripper_articulated/visual/link_1.obj"/>
+        <mesh name="rq_link_2" file="robotiq/robotiq-3f-gripper_articulated/visual/link_2.obj"/>
+        <mesh name="rq_link_3" file="robotiq/robotiq-3f-gripper_articulated/visual/link_3.obj"/>
+        <mesh name="rq_palm"   file="robotiq/robotiq-3f-gripper_articulated/visual/palm.obj"/>
+    </asset>
+
+  <worldbody>
+    <!-- palm body - this will become a child of the IIWA's attachment_site via <attach> -->
+    <body name="palm" childclass="robotiq">
+    <freejoint name="palm_free"/>
+      <inertial pos="0 0 0" mass="1.3" diaginertia="1.5e-3 1.5e-3 1.5e-3"/>
+      <geom class="robotiq_visual" type="mesh" mesh="rq_palm"/>
+
+      <body name="finger_1_link_0" pos="-0.0455 0.0214 0.036" quat="-2.59838e-06 0.706825 0.707388 2.59631e-06">
+        <inertial pos="0.02 0 0" mass="0.05" diaginertia="3.3e-6 3.3e-6 3.3e-6"/>
+        <joint name="palm_finger_1_joint" axis="0 1 0" range="-0.1784 0.192"/>
+        <geom class="robotiq_visual" pos="0.02 0 0" type="mesh" mesh="rq_link_0"/>
+        <body name="finger_1_link_1" pos="0.02 0 0">
+          <inertial pos="0.025 -0.014 0" mass="0.15" diaginertia="1.0e-5 3.6e-5 3.6e-5"/>
+          <joint name="finger_1_joint_1" axis="0 0 1" range="0.0495 1.2218"/>
+          <geom class="robotiq_visual" pos="0.05 -0.028 0" quat="0.96639 0 0 -0.257081" type="mesh" mesh="rq_link_1"/>
+          <body name="finger_1_link_2" pos="0.05 -0.028 0" quat="0.96639 0 0 -0.257081">
+            <inertial pos="0.02 0 0.0075" mass="0.15" diaginertia="1.0e-5 3.6e-5 3.6e-5"/>
+            <joint name="finger_1_joint_2" axis="0 0 1" range="0 1.5708"/>
+            <geom class="robotiq_visual" pos="0.039 0 0.0075" type="mesh" mesh="rq_link_2"/>
+            <body name="finger_1_link_3" pos="0.039 0 0">
+              <inertial pos="0.01 0 0" mass="0.05" diaginertia="3.3e-6 3.3e-6 3.3e-6"/>
+              <joint name="finger_1_joint_3" axis="0 0 1" range="-1.2217 -0.0523"/>
+              <geom class="robotiq_visual" quat="0.96639 0 0 0.257081" type="mesh" mesh="rq_link_3"/>
+              <geom name="f1_tip" class="robotiq_fingertip" type="capsule" fromto="0 0 0  0.03 0 0" size="0.008"/>
+            </body>
+          </body>
+        </body>
+      </body>
+
+      <body name="finger_2_link_0" pos="-0.0455 0.0214 -0.036" quat="-2.59838e-06 0.706825 0.707388 2.59631e-06">
+        <inertial pos="0.02 0 0" mass="0.05" diaginertia="3.3e-6 3.3e-6 3.3e-6"/>
+        <joint name="palm_finger_2_joint" axis="0 1 0" range="-0.192 0.1784"/>
+        <geom class="robotiq_visual" pos="0.02 0 0" type="mesh" mesh="rq_link_0"/>
+        <body name="finger_2_link_1" pos="0.02 0 0">
+          <inertial pos="0.025 -0.014 0" mass="0.15" diaginertia="1.0e-5 3.6e-5 3.6e-5"/>
+          <joint name="finger_2_joint_1" axis="0 0 1" range="0.0495 1.2218"/>
+          <geom class="robotiq_visual" pos="0.05 -0.028 0" quat="0.96639 0 0 -0.257081" type="mesh" mesh="rq_link_1"/>
+          <body name="finger_2_link_2" pos="0.05 -0.028 0" quat="0.96639 0 0 -0.257081">
+            <inertial pos="0.02 0 0.0075" mass="0.15" diaginertia="1.0e-5 3.6e-5 3.6e-5"/>
+            <joint name="finger_2_joint_2" axis="0 0 1" range="0 1.5708"/>
+            <geom class="robotiq_visual" pos="0.039 0 0.0075" type="mesh" mesh="rq_link_2"/>
+            <body name="finger_2_link_3" pos="0.039 0 0">
+              <inertial pos="0.01 0 0" mass="0.05" diaginertia="3.3e-6 3.3e-6 3.3e-6"/>
+              <joint name="finger_2_joint_3" axis="0 0 1" range="-1.2217 -0.0523"/>
+              <geom class="robotiq_visual" quat="0.96639 0 0 0.257081" type="mesh" mesh="rq_link_3"/>
+              <geom name="f2_tip" class="robotiq_fingertip" type="capsule" fromto="0 0 0  0.03 0 0" size="0.008"/>
+            </body>
+          </body>
+        </body>
+      </body>
+
+      <body name="finger_middle_link_0" pos="0.0455 0.0214 0" quat="0.707388 0 0 0.706825">
+        <inertial pos="0.02 0 0" mass="0.05" diaginertia="3.3e-6 3.3e-6 3.3e-6"/>
+        <geom class="robotiq_visual" pos="0.02 0 0" type="mesh" mesh="rq_link_0"/>
+        <body name="finger_middle_link_1" pos="0.02 0 0">
+          <inertial pos="0.025 -0.014 0" mass="0.15" diaginertia="1.0e-5 3.6e-5 3.6e-5"/>
+          <joint name="finger_middle_joint_1" axis="0 0 1" range="0.0495 1.2218"/>
+          <geom class="robotiq_visual" pos="0.05 -0.028 0" quat="0.96639 0 0 -0.257081" type="mesh" mesh="rq_link_1"/>
+          <body name="finger_middle_link_2" pos="0.05 -0.028 0" quat="0.96639 0 0 -0.257081">
+            <inertial pos="0.02 0 0.0075" mass="0.15" diaginertia="1.0e-5 3.6e-5 3.6e-5"/>
+            <joint name="finger_middle_joint_2" axis="0 0 1" range="0 1.5708"/>
+            <geom class="robotiq_visual" pos="0.039 0 0.0075" type="mesh" mesh="rq_link_2"/>
+            <body name="finger_middle_link_3" pos="0.039 0 0">
+              <inertial pos="0.01 0 0" mass="0.05" diaginertia="3.3e-6 3.3e-6 3.3e-6"/>
+              <joint name="finger_middle_joint_3" axis="0 0 1" range="-1.2217 -0.0523"/>
+              <geom class="robotiq_visual" quat="0.96639 0 0 0.257081" type="mesh" mesh="rq_link_3"/>
+              <geom name="fm_tip" class="robotiq_fingertip" type="capsule" fromto="0 0 0  0.03 0 0" size="0.008"/>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position name="f1_j1" class="robotiq" joint="finger_1_joint_1"      ctrlrange="0.05 1.22"/>
+    <position name="f1_j2" class="robotiq" joint="finger_1_joint_2"      ctrlrange="0.0 1.57"/>
+    <position name="f1_j3" class="robotiq" joint="finger_1_joint_3"      ctrlrange="-1.22 -0.05"/>
+    <position name="f2_j1" class="robotiq" joint="finger_2_joint_1"      ctrlrange="0.05 1.22"/>
+    <position name="f2_j2" class="robotiq" joint="finger_2_joint_2"      ctrlrange="0.0 1.57"/>
+    <position name="f2_j3" class="robotiq" joint="finger_2_joint_3"      ctrlrange="-1.22 -0.05"/>
+    <position name="fm_j1" class="robotiq" joint="finger_middle_joint_1" ctrlrange="0.05 1.22"/>
+    <position name="fm_j2" class="robotiq" joint="finger_middle_joint_2" ctrlrange="0.0 1.57"/>
+    <position name="fm_j3" class="robotiq" joint="finger_middle_joint_3" ctrlrange="-1.22 -0.05"/>
+    <position name="pf1"   class="robotiq" joint="palm_finger_1_joint"   ctrlrange="-0.18 0.19"/>
+    <position name="pf2"   class="robotiq" joint="palm_finger_2_joint"   ctrlrange="-0.19 0.18"/>
+  </actuator>
+</mujoco>
